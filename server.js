@@ -11,9 +11,11 @@ const port = process.env.PORT || 3000;
 // Importar rutas
 const rolesRoutes = require("./routes/roles");
 const proveedoresRoutes = require("./routes/proveedores");
+const personasRoutes = require("./routes/personas");
 
 app.use("/api/roles", rolesRoutes);
 app.use("/api/proveedores", proveedoresRoutes);
+app.use("/api/personas", personasRoutes);
 
 app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
