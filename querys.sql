@@ -29,18 +29,25 @@ CREATE TABLE productos (
     id_producto SERIAL PRIMARY KEY,
     nombre VARCHAR(150) NOT NULL,
     descripcion TEXT,
-    precio_compra DECIMAL(10,2) NOT NULL, -- Precio al que el proveedor vende el producto
-    precio_venta DECIMAL(10,2) NOT NULL, -- Precio al que se venderá al cliente
+    precio_compra DECIMAL(10,2) NOT NULL,
+    precio_venta DECIMAL(10,2) NOT NULL,
     stock INT NOT NULL CHECK (stock >= 0),
-    id_proveedor INT REFERENCES proveedores(id_proveedor) ON DELETE SET NULL
+    id_proveedor INT,
+    FOREIGN KEY (id_proveedor) 
+        REFERENCES proveedores(id_proveedor) 
+        ON DELETE CASCADE
 );
 
 -- Crear la tabla de cabecera de factura, que depende de personas
 CREATE TABLE cabecera_factura (
     id_factura SERIAL PRIMARY KEY,
-    id_persona INT REFERENCES personas(id_persona) ON DELETE CASCADE,
+    id_persona INT,  -- Primero defines la columna
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    total DECIMAL(10,2) NOT NULL
+    total DECIMAL(10,2) NOT NULL,
+    -- Luego defines la clave foránea con ON DELETE CASCADE
+    FOREIGN KEY (id_persona) 
+        REFERENCES personas(id_persona) 
+        ON DELETE CASCADE
 );
 
 -- Crear la tabla de detalle de factura, que depende de cabecera_factura y productos
