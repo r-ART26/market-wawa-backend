@@ -1,21 +1,24 @@
--- Crear la tabla de roles primero, ya que personas depende de ella
-CREATE TABLE roles (
-    id_rol SERIAL PRIMARY KEY,
-    nombre VARCHAR(50) UNIQUE NOT NULL
-);
+    CREATE TABLE usuarios (
+        id_usuario SERIAL PRIMARY KEY,
+        cedula VARCHAR(11) UNIQUE NOT NULL,
+        nombre VARCHAR(100) NOT NULL,
+        apellido VARCHAR(100),
+        telefono VARCHAR(20),
+        nombre_usuario VARCHAR(50) UNIQUE NOT NULL,
+        contraseña TEXT NOT NULL,
+        rol VARCHAR(20) NOT NULL
+    );
 
--- Crear la tabla de personas, que incluye la clave foránea a roles
-CREATE TABLE personas (
-    id_persona SERIAL PRIMARY KEY,
+CREATE TABLE clientes (
+    id_cliente SERIAL PRIMARY KEY,
+    cedula VARCHAR(20) UNIQUE NOT NULL,
     nombre VARCHAR(100) NOT NULL,
     apellido VARCHAR(100),
     direccion TEXT,
     telefono VARCHAR(20),
-    email VARCHAR(100) UNIQUE,
-    id_rol INT REFERENCES roles(id_rol) ON DELETE SET NULL
+    email VARCHAR(100) UNIQUE
 );
 
--- Crear la tabla de proveedores
 CREATE TABLE proveedores (
     id_proveedor SERIAL PRIMARY KEY,
     nombre VARCHAR(150) NOT NULL,
@@ -24,7 +27,6 @@ CREATE TABLE proveedores (
     email VARCHAR(100) UNIQUE
 );
 
--- Crear la tabla de productos, que depende de proveedores
 CREATE TABLE productos (
     id_producto SERIAL PRIMARY KEY,
     nombre VARCHAR(150) NOT NULL,
@@ -38,19 +40,20 @@ CREATE TABLE productos (
         ON DELETE CASCADE
 );
 
--- Crear la tabla de cabecera de factura, que depende de personas
 CREATE TABLE cabecera_factura (
     id_factura SERIAL PRIMARY KEY,
-    id_persona INT,  -- Primero defines la columna
+    id_cliente INT,  
+    id_usuario INT,
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     total DECIMAL(10,2) NOT NULL,
-    -- Luego defines la clave foránea con ON DELETE CASCADE
-    FOREIGN KEY (id_persona) 
-        REFERENCES personas(id_persona) 
+    FOREIGN KEY (id_cliente) 
+        REFERENCES clientes(id_cliente) 
+        ON DELETE CASCADE,
+    FOREIGN KEY (id_usuario) 
+        REFERENCES usuarios(id_usuario) 
         ON DELETE CASCADE
 );
 
--- Crear la tabla de detalle de factura, que depende de cabecera_factura y productos
 CREATE TABLE detalle_factura (
     id_detalle SERIAL PRIMARY KEY,
     id_factura INT,
@@ -58,7 +61,6 @@ CREATE TABLE detalle_factura (
     cantidad INT NOT NULL CHECK (cantidad > 0),
     precio_unitario DECIMAL(10,2) NOT NULL,
     subtotal DECIMAL(10,2) NOT NULL,
-    -- Definición de claves foráneas al final
     FOREIGN KEY (id_factura) 
         REFERENCES cabecera_factura(id_factura) 
         ON DELETE CASCADE,

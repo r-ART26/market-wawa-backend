@@ -2,27 +2,27 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../db"); // Conexión a PostgreSQL
 
-// Obtener todas las facturas
+// Obtener todos los clientes
 router.get("/", async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM cabecera_factura");
+    const result = await pool.query("SELECT * FROM clientes");
     res.json(result.rows);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// Obtener una factura por ID
+// Obtener un cliente por ID
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const result = await pool.query(
-      "SELECT * FROM cabecera_factura WHERE id_factura = $1",
+      "SELECT * FROM clientes WHERE id_cliente = $1",
       [id]
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: "Factura no encontrada" });
+      return res.status(404).json({ error: "Cliente no encontrado" });
     }
 
     res.json(result.rows[0]);
@@ -31,14 +31,14 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Crear una nueva factura
+// Crear un nuevo cliente
 router.post("/", async (req, res) => {
   try {
-    const { id_cliente, id_usuario, total } = req.body;
+    const { cedula, nombre, apellido, direccion, telefono, email } = req.body;
     const result = await pool.query(
-      `INSERT INTO cabecera_factura (id_cliente, id_usuario, total) 
-             VALUES ($1, $2, $3) RETURNING *`,
-      [id_cliente, id_usuario, total]
+      `INSERT INTO clientes (cedula, nombre, apellido, direccion, telefono, email) 
+             VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+      [cedula, nombre, apellido, direccion, telefono, email]
     );
     res.status(201).json(result.rows[0]);
   } catch (error) {
@@ -46,21 +46,21 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Actualizar una factura por ID
+// Actualizar un cliente por ID
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { id_cliente, id_usuario, total } = req.body;
+    const { cedula, nombre, apellido, direccion, telefono, email } = req.body;
 
     const result = await pool.query(
-      `UPDATE cabecera_factura 
-             SET id_cliente = $1, id_usuario = $2, total = $3
-             WHERE id_factura = $4 RETURNING *`,
-      [id_cliente, id_usuario, total, id]
+      `UPDATE clientes 
+             SET cedula = $1, nombre = $2, apellido = $3, direccion = $4, telefono = $5, email = $6
+             WHERE id_cliente = $7 RETURNING *`,
+      [cedula, nombre, apellido, direccion, telefono, email, id]
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: "Factura no encontrada" });
+      return res.status(404).json({ error: "Cliente no encontrado" });
     }
 
     res.json(result.rows[0]);
@@ -69,20 +69,20 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Eliminar una factura por ID
+// Eliminar un cliente por ID
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const result = await pool.query(
-      "DELETE FROM cabecera_factura WHERE id_factura = $1 RETURNING *",
+      "DELETE FROM clientes WHERE id_cliente = $1 RETURNING *",
       [id]
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: "Factura no encontrada" });
+      return res.status(404).json({ error: "Cliente no encontrado" });
     }
 
-    res.json({ message: "Factura eliminada correctamente" });
+    res.json({ message: "Cliente eliminado correctamente" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
