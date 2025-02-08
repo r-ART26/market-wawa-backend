@@ -53,9 +53,16 @@ CREATE TABLE cabecera_factura (
 -- Crear la tabla de detalle de factura, que depende de cabecera_factura y productos
 CREATE TABLE detalle_factura (
     id_detalle SERIAL PRIMARY KEY,
-    id_factura INT REFERENCES cabecera_factura(id_factura) ON DELETE CASCADE,
-    id_producto INT REFERENCES productos(id_producto) ON DELETE CASCADE,
+    id_factura INT,
+    id_producto INT,
     cantidad INT NOT NULL CHECK (cantidad > 0),
     precio_unitario DECIMAL(10,2) NOT NULL,
-    subtotal DECIMAL(10,2) NOT NULL
+    subtotal DECIMAL(10,2) NOT NULL,
+    -- Definición de claves foráneas al final
+    FOREIGN KEY (id_factura) 
+        REFERENCES cabecera_factura(id_factura) 
+        ON DELETE CASCADE,
+    FOREIGN KEY (id_producto) 
+        REFERENCES productos(id_producto) 
+        ON DELETE CASCADE
 );
