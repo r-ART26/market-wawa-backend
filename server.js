@@ -8,13 +8,13 @@ app.use(express.json());
 
 const port = process.env.PORT || 3000;
 
-// Importar rutas
 const proveedoresRoutes = require("./routes/proveedores");
 const usuariosRoutes = require("./routes/usuarios");
 const productosRoutes = require("./routes/productos");
 const detalleFacturaRoutes = require("./routes/detalle_factura");
 const clientesRoutes = require("./routes/clientes");
 const facturasRoutes = require("./routes/cabecera_factura");
+const reportesRoutes = require("./routes/reportes");
 
 app.use("/api/proveedores", proveedoresRoutes);
 app.use("/api/usuarios", usuariosRoutes);
@@ -22,6 +22,7 @@ app.use("/api/productos", productosRoutes);
 app.use("/api/detalle_factura", detalleFacturaRoutes);
 app.use("/api/clientes", clientesRoutes);
 app.use("/api/facturas", facturasRoutes);
+app.use("/api/reportes", reportesRoutes);
 
 app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
