@@ -104,4 +104,38 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+// Ruta para autenticar un usuario
+router.post("/login", async (req, res) => {
+  try {
+    const { nombre_usuario, contraseña } = req.body;
+
+    // Buscar el usuario por nombre de usuario
+    const result = await pool.query(
+      "SELECT * FROM usuarios WHERE nombre_usuario = $1",
+      [nombre_usuario]
+    );
+
+    // Verificar si el usuario existe
+    if (result.rows.length === 0) {
+      return res
+        .status(401)
+        .json({ error: "Usuario o contraseña incorrectos" });
+    }
+
+    const usuario = result.rows[0];
+
+    // Verificar si la contraseña coincide (sin cifrado, comparación directa)
+    if (usuario.contrasenia !== contraseña) {
+      return res
+        .status(401)
+        .json({ error: "Usuario o contraseña incorrectos" });
+    }
+
+    // Si las credenciales son correctas, devolver los datos del usuario
+    res.json(usuario);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;

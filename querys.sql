@@ -1,13 +1,13 @@
-    CREATE TABLE usuarios (
-        id_usuario SERIAL PRIMARY KEY,
-        cedula VARCHAR(11) UNIQUE NOT NULL,
-        nombre VARCHAR(100) NOT NULL,
-        apellido VARCHAR(100),
-        telefono VARCHAR(20),
-        nombre_usuario VARCHAR(50) UNIQUE NOT NULL,
-        contraseña TEXT NOT NULL,
-        rol VARCHAR(20) NOT NULL
-    );
+CREATE TABLE usuarios (
+    id_usuario SERIAL PRIMARY KEY,
+    cedula VARCHAR(11) UNIQUE NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100),
+    telefono VARCHAR(20),
+    nombre_usuario VARCHAR(50) UNIQUE NOT NULL,
+    contrasenia TEXT NOT NULL,
+    rol VARCHAR(20) NOT NULL
+);
 
 CREATE TABLE clientes (
     id_cliente SERIAL PRIMARY KEY,
