@@ -68,3 +68,41 @@ CREATE TABLE detalle_factura (
         REFERENCES productos(id_producto) 
         ON DELETE CASCADE
 );
+
+-- Inserción de usuarios
+INSERT INTO usuarios (cedula, nombre, apellido, telefono, nombre_usuario, contrasenia, rol) VALUES
+('12345678901', 'Juan', 'Pérez', '0987654321', 'admin_juan', 'admin123', 'administrador'),
+('23456789012', 'María', 'López', '0976543210', 'cajero_maria', 'cajero123', 'cajero'),
+('34567890123', 'Carlos', 'Gómez', '0965432109', 'cajero_carlos', 'cajero456', 'cajero');
+
+-- Inserción de clientes
+INSERT INTO clientes (cedula, nombre, apellido, direccion, telefono, email) VALUES
+('11122233344', 'Ana', 'Fernández', 'Calle 123', '0991112223', 'ana@mail.com'),
+('22233344455', 'Luis', 'Martínez', 'Av. Central 45', '0982223334', 'luis@mail.com');
+
+-- Inserción de proveedores
+INSERT INTO proveedores (nombre, direccion, telefono, email) VALUES
+('Distribuidora Alimentos', 'Av. Industrial 100', '0981112233', 'contacto@alimentos.com'),
+('Snacks Express', 'Calle Comercio 50', '0972223344', 'ventas@snacksexpress.com'),
+('Bazar Hogar', 'Av. Principal 200', '0963334455', 'info@bazarhogar.com');
+
+-- Inserción de productos
+INSERT INTO productos (nombre, descripcion, precio_compra, precio_venta, stock, id_proveedor) VALUES
+('Arroz 1kg', 'Bolsa de arroz de 1kg', 1.00, 1.50, 100, 1), 
+('Aceite 1L', 'Aceite vegetal de 1 litro', 2.50, 3.50, 50, 1),
+('Galletas Choco', 'Paquete de galletas de chocolate', 0.80, 1.20, 200, 2), 
+('Papas Fritas', 'Bolsa de papas fritas 150g', 0.90, 1.50, 150, 2),
+('Plato de Cerámica', 'Plato blanco de cerámica', 3.00, 5.00, 30, 3), 
+('Taza de Café', 'Taza de cerámica para café', 2.00, 4.00, 40, 3);
+
+-- Inserción de cabeceras de factura
+INSERT INTO cabecera_factura (id_cliente, id_usuario, total) VALUES
+(1, 2, 5.20), 
+(2, 3, 8.00); 
+
+-- Inserción de detalles de factura
+INSERT INTO detalle_factura (id_factura, id_producto, cantidad, precio_unitario, subtotal) VALUES
+(1, 1, 2, 1.50, 3.00), 
+(1, 3, 2, 1.20, 2.40), 
+(2, 2, 1, 3.50, 3.50), 
+(2, 5, 1, 5.00, 5.00); 
