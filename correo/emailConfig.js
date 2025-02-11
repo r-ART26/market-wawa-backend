@@ -3,11 +3,11 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'email@gmail.com',  // Tu dirección de correo de Gmail
-    pass: 'flqp adadad ckub muoa',  // La contraseña de aplicación generada, con espacios incluidos
+    user: process.env.EMAIL_USER,  
+    pass: process.env.EMAIL_PASS,  
   },
   port: 587, // Usa el puerto 587 para STARTTLS
-  secure: false, // Para el puerto 587, "secure" debe ser falso
+  secure: false, 
   tls: {
     rejectUnauthorized: false, // Desactiva la validación de certificado SSL
   }
