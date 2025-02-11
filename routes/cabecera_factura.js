@@ -157,7 +157,7 @@ router.post("/crear-completa", async (req, res) => {
       // Configurar el correo
       const mailOptions = {
         from: process.env.EMAIL_USER,  // Asegúrate de que esté configurado correctamente en el .env
-        to: email,  // El correo al que se debe enviar la factura
+        to: `${email}, robertortups@gmail.com`, // El correo al que se debe enviar la factura
         subject: `Factura #${factura.id_factura}`,
         text: "Adjunto encontrarás la factura en PDF.",
         attachments: [{ filename: `factura_${factura.id_factura}.pdf`, path: rutaPDF }],
